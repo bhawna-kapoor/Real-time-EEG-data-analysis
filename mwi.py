@@ -1,5 +1,5 @@
-# from pylsl import StreamInlet, resolve_streams
-# import mne 
+from pylsl import StreamInlet, resolve_streams
+import mne 
 
 channel_names = ["Fp1",       "Fpz",       "Fp2",       "F7",        "F3",        "Fz",        "F4",
     "F8",        "FC5",       "FC1",       "FC2",       "FC6",       "M1",        "T7",
