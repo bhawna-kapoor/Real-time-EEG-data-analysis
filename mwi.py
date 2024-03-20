@@ -38,6 +38,10 @@ for stream in streams:
                 bandpass_fil_data = mne.io.Raw.filter(downsampled_data, l_freq=1, h_freq=40,
                                                       picks=['F3', 'F4', 'P7', 'P8'])
 
+                # Calculation of Relative Power
+                # Relative Power = power of certain frequency band / summation of all frequency bands power
+                
+                # all frequency bands power at selected channels 
                 f3_df = mne.io.Raw.compute_psd(bandpass_fil_data, method='welch', fmin=1, fmax=40,
                                                picks='F3').to_data_frame()
                 f4_df = mne.io.Raw.compute_psd(bandpass_fil_data, method='welch', fmin=1, fmax=40,
@@ -52,6 +56,7 @@ for stream in streams:
                 p7_mean = p7_df['P7'].mean()
                 p8_mean = p8_df['P8'].mean()
 
+                # power of required frequency band with selected channels
                 f3_theta_df = mne.io.Raw.compute_psd(bandpass_fil_data, method='welch', fmin=0, fmax=4,
                                                      picks='F3').to_data_frame()
                 f4_theta_df = mne.io.Raw.compute_psd(bandpass_fil_data, method='welch', fmin=0, fmax=4,
@@ -66,12 +71,15 @@ for stream in streams:
                 p7_alpha_mean = p7_alpha_df['P7'].mean()
                 p8_alpha_mean = p8_alpha_df['P8'].mean()
 
+                # Formula for relative power used
                 f3_theta_rp = f3_theta_mean / f3_mean
                 f4_theta_rp = f4_theta_mean / f4_mean
                 p7_alpha_rp = p7_alpha_mean / p7_mean
                 p8_alpha_rp = p8_alpha_mean / p8_mean
 
                 # Calculating mental workload index
+                # Mental workload index = Average frontal theta power / Average parietal alpha power
+                # (F3 theta RP + F4 theta RP) / (P7 Alpha RP + P8 Alpha RP)
                 avg_frontal_theta_power = f3_theta_rp + f4_theta_rp
                 avg_parietal_alpha_power = p7_alpha_rp + p8_alpha_rp
                 mwi = avg_frontal_theta_power / avg_parietal_alpha_power
